@@ -1,0 +1,35 @@
+service: aws-serverless03
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
+  - serverless-express
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 5000
+    noPrependStageInUrl: true
+
+provider:
+  name: aws
+  region: eu-west-3
+  runtime: nodejs14.x  	
+
+functions:
+  api:
+    handler: src/main.api
+    url: true
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: /{proxy+}
+
+package:
+  patterns:
+    - 'views/**'
